@@ -45,17 +45,23 @@ django-orm/
 :rocket: How to Run after cloning repo locally (using macOS)
 --------------------
 # From repo root
+```
 python3 -m venv venv
 venv/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install django
+```
 
 # To initialize DB schema
+```
 python3 manage.py makemigrations db
 python3 manage.py migrate
+```
 
 # To run the app
+```
 python3 main.py
+```
 
 **NB:** "python 3 used because of python version
 
