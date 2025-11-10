@@ -4,7 +4,7 @@ Assignment 3 – Cash Register using Django ORM
 
 **Course:** <SOFE 3650>  
 **Group:** Group 16 – CRN 45740  
-**Author(s):** <Samuel Ajoku , Omar Ahmed , Zeyad Ghazal >
+**Author(s):** Samuel Ajoku , Omar Ahmed , Zeyad Ghazal 
 
 This small, **standalone Python app** uses **Django ORM** (without a web server) to:
 1) **Populate** an SQLite database with product **UPC, name, price**  
@@ -65,23 +65,33 @@ python3 main.py
 ----------------------
 
 **1. DB populated (seed complete)**
-    Terminal output showing seed count and totals.
-    
+    : Terminal output showing seed count and totals.
+    ![Seed complete](ScreenDumps/screen1.png)
+
+
     
 **2. Scan – known UPC (displays name & price)**
-    Scanner window after entering 11111 (or any UPC from products.txt).
+    : Scanner window after entering 11111 (or any UPC from products.txt).
+    ![Known UPC](ScreenDumps/screen2.png)
     
+
     
 **3. Scan – unknown UPC**
-    Enter a UPC not in DB; Display shows 31214 (unknown)
+    : Enter a UPC not in DB; Display shows 31214 (unknown)
+    ![Unknown UPC](ScreenDumps/screen3.png)
+
 
     
 **4. Scan – without entering a UPC**
-    Click scan without typing a UPC; Generates a random UPC from DB
+    : Click scan without typing a UPC; Generates a random UPC from DB
+    ![Clear UPC](ScreenDumps/screen4.png)
     
+
     
 **5. Subtotal updates after multiple scans**
-    Display shows multiple lines and Subtotal updated.
+    : Display shows multiple lines and Subtotal updated.
+    ![Subtotal](ScreenDumps/screen5.png)
+
     
 📖: Design Notes
 ----------------------
