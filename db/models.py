@@ -7,10 +7,12 @@ except Exception:
     sys.exit()
 
 
-# Sample User model
-class User(models.Model):
-    name = models.CharField(max_length=50, default="Dan")
+# Product model
+class Product(models.Model):
+    upc = models.CharField(max_length=32, unique=True)
+    name = models.CharField(max_length=120)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.name
-
+        # Match A2 Display formatting: "UPC name $price"
+        return f"{self.upc} {self.name} ${self.price:.2f}"
