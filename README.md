@@ -97,8 +97,111 @@ python3 main.py
 **5. Subtotal updates after multiple scans**
     : Display shows multiple lines and Subtotal updated.
     ![Subtotal](ScreenDumps/screen5.png)
-
     
+
+🧠: main.py- Application Logic Overview
+----------------------
+The main.py file contains the entire functional logic of the cash register system.
+It brings together **database population, Django ORM usage**, and the **Tkinter GUI** (Scanner + Display), mirroring the MVC-style behavior from Assignment 2 but implemented with Django’s ORM instead of in-memory data.
+
+**1. Setup and initialization**
+```pyhton
+import os, django, random
+from decimal import Decimal, ROUND_HALF_UP
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+django.setup()
+from db.models import Product
+```
+-Loads Django’s environment so ORM commands (like Product.objects.get_or_create) can be used without running a Django web server.
+
+-Imports Product from db/models.py – this is the model that maps directly to the SQLite table db_product.
+
+-Initializes Python’s random library for optional random UPC scanning.
+
+**2. Database  Population (seeds from products.txt)**
+```pyhton
+def seed_from_products_txt(path="products.txt"):
+    "lines 30-49"
+    Product.objects.get_or_create(upc=upc, defaults={"name": name, "price": price})
+```
+-Reads product data from products.txt.
+
+-Uses the Django ORM method get_or_create() to insert rows into the database if they don’t already exist.
+
+-Ensures the table is always populated before the GUI runs.
+
+-Prints a summary such as:
+
+-Seed complete. Created 4 new products. Total: 4
+
+-This directly satisfies part (a) of the assignment:
+
+“Populating the DB with product UPC codes, names, and prices.”
+
+**3. Cash Register Logic**
+```pyhton
+class CashRegister:
+    def add_by_upc(self, upc):
+        p = self.find_by_upc(upc)
+        if p:
+            self.scanned.append(p)
+        return p
+```
+-Keeps track of all scanned products (self.scanned list).
+
+-Retrieves product information using Django ORM queries:
+
+-Product.objects.get(upc=upc)
+
+-Calculates the subtotal using Python’s Decimal for precision.
+
+-Returns None when a UPC isn’t found (triggers “(unknown)” in the display).
+
+**4. Tkinter GUI**
+
+ScannerUI class
+```pyhton
+def current_upc(self, get_random_upc):
+    code = self.upc_var.get().strip()
+    return code or get_random_upc()
+```
+-Provides an input box to type or “scan” a UPC.
+
+-If left blank, automatically picks a random product.
+
+-On button click, calls a handler in main() that queries the ORM for the product.
+
+DisplayUI class
+```pyhton
+self.listbox.insert(tk.END, text)
+self.subtotal_var.set(f"Subtotal: ${value:.2f}")
+```
+-Shows scanned items line-by-line.
+
+-Displays the running subtotal at the bottom.
+
+**5. Main Function**
+  ```python
+def main():
+    seed_from_products_txt()
+    register = CashRegister()
+    ...
+    ScannerUI(root, on_scan=handle_scan, get_random_upc=register.get_random_upc)
+  ``` 
+-Seeds the database first.
+
+-Creates the CashRegister, DisplayUI, and ScannerUI objects.
+
+-Defines handle_scan() which:
+
+    Looks up a product in the database.
+    
+    Updates the display with UPC name $price or UPC (unknown).
+    
+    Updates the subtotal.
+
+
+
 📖: Design Notes
 ----------------------
 
